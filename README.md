@@ -80,10 +80,10 @@ The entrypoint output is shown directly in the deploy log.
 containerlab inspect -t basic-lab.clab.yml
 
 # IPv4 ping
-docker exec -it clab-basic-lab-node1 ping -c 3 10.0.0.2
+docker exec clab-basic-lab-node1 ping -c 3 10.0.0.2
 
 # IPv6 ping
-docker exec -it clab-basic-lab-node1 ping -6 -c 3 fc00::2
+docker exec clab-basic-lab-node1 ping -6 -c 3 fc00::2
 ```
 
 ### 4. Destroy Topology
