@@ -47,3 +47,4 @@ else
 fi
 
 echo "[INFO] Node ${HOSTNAME} ready"
+echo "Personalized Test: Bind-Mount is Working!"
