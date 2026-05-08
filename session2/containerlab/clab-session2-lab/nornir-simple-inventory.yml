@@ -1,0 +1,16 @@
+---
+node1:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.2
+node2:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.4
+router:
+    username: 
+    password: 
+    platform: linux
+    hostname: 172.20.20.3

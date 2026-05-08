@@ -2,49 +2,47 @@
 set -euo pipefail
 
 HOSTNAME=$(hostname)
-CFG_DIR="/etc/nodes"
-CFG_FILE="${CFG_DIR}/${HOSTNAME}.cfg"
-ETH1_INTERFACE="eth1"
+CFG_FILE="/etc/nodes/${HOSTNAME}.cfg"
 
-echo "=== Node entrypoint: ${HOSTNAME} ==="
+echo "=== Auto-Configuring: ${HOSTNAME} ==="
 
-if [[ ! -f "${CFG_FILE}" ]]; then
-    echo "[FATAL] Configuration file missing: ${CFG_FILE}"
-    exit 1
+if [[ -f "${CFG_FILE}" ]]; then
+    source "${CFG_FILE}"
 fi
-
-echo "[INFO] Loading config: ${CFG_FILE}"
-source "${CFG_FILE}"
 
 ip link set lo up
-echo "[OK] Loopback interface up"
 
-ip link set "${ETH1_INTERFACE}" up
-echo "[OK] ${ETH1_INTERFACE} interface up"
-
-ip addr flush dev "${ETH1_INTERFACE}" 2>/dev/null || true
-ip addr add "${NODE_IP}/${NODE_PREFIX}" dev "${ETH1_INTERFACE}"
-echo "[OK] IPv4 configured: ${NODE_IP}/${NODE_PREFIX}"
-
-ip -6 addr add "${NODE_IP6}/${NODE_PREFIX6}" dev "${ETH1_INTERFACE}" nodad
-echo "[OK] IPv6 configured: ${NODE_IP6}/${NODE_PREFIX6}"
-
-echo ""
-echo "[INFO] Network configuration:"
-ip addr show
-echo ""
-
-if ping -c 2 -W 2 "${PEER_IP}" >/dev/null 2>&1; then
-    echo "[OK] Peer IPv4 (${PEER_IP}) reachable"
-else
-    echo "[WARN] Peer IPv4 (${PEER_IP}) not reachable"
+# Force flush all existing IPs on eth1 and eth2 to prevent "File exists" error
+ip addr flush dev eth1 || true
+ip link set eth1 up
+if [ -d /sys/class/net/eth2 ]; then
+    ip addr flush dev eth2 || true
+    ip link set eth2 up
 fi
 
-if ping -6 -c 2 -W 2 "${PEER_IP6}" >/dev/null 2>&1; then
-    echo "[OK] Peer IPv6 (${PEER_IP6}) reachable"
-else
-    echo "[WARN] Peer IPv6 (${PEER_IP6}) not reachable"
+if [[ "${HOSTNAME}" == "router" ]]; then
+    sysctl -w net.ipv4.ip_forward=1
+    sysctl -w net.ipv4.conf.all.forwarding=1
+    sysctl -w net.ipv6.conf.all.forwarding=1
+    
+    # Static IPs for Router (Gateways)
+    ip addr add 192.168.1.1/24 dev eth1
+    ip addr add 192.168.2.1/24 dev eth2
+    ip -6 addr add fd00:1::1/64 dev eth1 nodad
+    ip -6 addr add fd00:2::1/64 dev eth2 nodad
 fi
 
-echo "[INFO] Node ${HOSTNAME} ready"
-echo "Personalized Test: Bind-Mount is Working!"
+if [[ -n "${NODE_IP:-}" ]]; then
+    ip addr add "${NODE_IP}/${NODE_PREFIX}" dev eth1
+    ip -6 addr add "${NODE_IP6}/${NODE_PREFIX6}" dev eth1 nodad
+fi
+
+if [[ -n "${PEER_IP:-}" ]]; then
+    # Delete any existing default routes before adding the new one
+    ip route del default || true
+    ip route add default via "${PEER_IP}"
+    ip -6 route del default || true
+    ip -6 route add default via "${PEER_IP6}"
+fi
+
+echo "[OK] Configuration applied for ${HOSTNAME}."

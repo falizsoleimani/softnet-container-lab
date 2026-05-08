@@ -1,4 +1,4 @@
-name: basic-lab
+name: session2-lab
 
 topology:
   defaults:
@@ -10,17 +10,17 @@ topology:
       binds:
         - configs/node1.cfg:/etc/nodes/node1.cfg:ro
         - bin/entrypoint.sh:/entrypoint.sh
-      exec:
-        - bash /entrypoint.sh
-
+      exec: [bash /entrypoint.sh]
+    router:
+      binds:
+        - bin/entrypoint.sh:/entrypoint.sh
+      exec: [bash /entrypoint.sh]
     node2:
       binds:
         - configs/node2.cfg:/etc/nodes/node2.cfg:ro
         - bin/entrypoint.sh:/entrypoint.sh
-      exec:
-        - bash /entrypoint.sh
+      exec: [bash /entrypoint.sh]
 
   links:
-    - endpoints:
-        - node1:eth1
-        - node2:eth1
+    - endpoints: ["node1:eth1", "router:eth1"]
+    - endpoints: ["node2:eth1", "router:eth2"]

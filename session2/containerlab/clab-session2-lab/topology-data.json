@@ -1,0 +1,148 @@
+{
+  "name": "session2-lab",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "clab",
+      "mgmt": {
+        "network": "clab",
+        "bridge": "br-de7069f82cd4",
+        "ipv4-subnet": "172.20.20.0/24",
+        "ipv4-gw": "172.20.20.1",
+        "ipv6-subnet": "3fff:172:20:20::/64",
+        "ipv6-gw": "3fff:172:20:20::1",
+        "external-access": true
+      }
+    }
+  },
+  "ssh-pub-keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFSRQxe7vLz8Tzm6YiI9npsR95rRNEdMVpU8ZergK/Jg","ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDs6gYlmzL6hWcnWstvo/Q4PpGc4ioRqxtda2rKQ2j25"],
+  "nodes": {
+    "node1": {
+      "index": "0",
+      "shortname": "node1",
+      "longname": "clab-session2-lab-node1",
+      "fqdn": "node1.session2-lab.io",
+      "group": "",
+      "labdir": "/home/yazdan/softnet-container-lab/session2/containerlab/clab-session2-lab/node1",
+      "kind": "linux",
+      "image": "clab-ubuntu-softnet:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.2",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::2",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-de7069f82cd4",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/yazdan/softnet-container-lab/session2/containerlab/clab-session2-lab/node1",
+        "clab-node-longname": "clab-session2-lab-node1",
+        "clab-node-name": "node1",
+        "clab-node-type": "",
+        "clab-owner": "yazdan",
+        "clab-topo-file": "/home/yazdan/softnet-container-lab/session2/containerlab/basic-lab.clab.yml",
+        "containerlab": "session2-lab"
+      },
+      "port-bindings": [
+      ]
+    },
+    "node2": {
+      "index": "1",
+      "shortname": "node2",
+      "longname": "clab-session2-lab-node2",
+      "fqdn": "node2.session2-lab.io",
+      "group": "",
+      "labdir": "/home/yazdan/softnet-container-lab/session2/containerlab/clab-session2-lab/node2",
+      "kind": "linux",
+      "image": "clab-ubuntu-softnet:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.4",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::4",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-de7069f82cd4",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/yazdan/softnet-container-lab/session2/containerlab/clab-session2-lab/node2",
+        "clab-node-longname": "clab-session2-lab-node2",
+        "clab-node-name": "node2",
+        "clab-node-type": "",
+        "clab-owner": "yazdan",
+        "clab-topo-file": "/home/yazdan/softnet-container-lab/session2/containerlab/basic-lab.clab.yml",
+        "containerlab": "session2-lab"
+      },
+      "port-bindings": [
+      ]
+    },
+    "router": {
+      "index": "2",
+      "shortname": "router",
+      "longname": "clab-session2-lab-router",
+      "fqdn": "router.session2-lab.io",
+      "group": "",
+      "labdir": "/home/yazdan/softnet-container-lab/session2/containerlab/clab-session2-lab/router",
+      "kind": "linux",
+      "image": "clab-ubuntu-softnet:latest",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.20.20.3",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "3fff:172:20:20::3",
+      "mgmt-ipv6-prefix-length": 64,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-de7069f82cd4",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/yazdan/softnet-container-lab/session2/containerlab/clab-session2-lab/router",
+        "clab-node-longname": "clab-session2-lab-router",
+        "clab-node-name": "router",
+        "clab-node-type": "",
+        "clab-owner": "yazdan",
+        "clab-topo-file": "/home/yazdan/softnet-container-lab/session2/containerlab/basic-lab.clab.yml",
+        "containerlab": "session2-lab"
+      },
+      "port-bindings": [
+      ]
+    }
+  },
+  "links": [
+    {
+      "endpoints": {
+        "a": {
+          "node": "node1",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:6d:80:b1",
+          "peer": "z"
+        },
+        "z": {
+          "node": "router",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:e0:26:87",
+          "peer": "a"
+        }
+      }
+    },
+    {
+      "endpoints": {
+        "a": {
+          "node": "node2",
+          "interface": "eth1",
+          "mac": "aa:c1:ab:30:9f:06",
+          "peer": "z"
+        },
+        "z": {
+          "node": "router",
+          "interface": "eth2",
+          "mac": "aa:c1:ab:89:87:a9",
+          "peer": "a"
+        }
+      }
+    }
+  ]
+}
