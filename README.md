@@ -1,3 +1,9 @@
+## E3 Project Documentation
+
+[E3 — Packet Size Analyzer using eBPF/XDP](containerlab/e3-packet-size-analyzer/README_E3.md)
+
+---
+
 # clab-softnet — Simple 2-Node ContainerLab Topology
 
 **Purpose:** Minimal containerlab topology with dual-stack IPv4/IPv6 support
