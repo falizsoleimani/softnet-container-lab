@@ -312,27 +312,3 @@ sudo bpftool net
 ```
 
 ---
-
-## Notes for Oral Presentation
-
-This project implements the Basic level of E3 — Packet Size Analyzer.
-
-The eBPF program is attached to the XDP hook.
-
-For each incoming packet, it calculates the packet size using:
-
-```c
-packet_size = data_end - data;
-```
-
-It stores total packets, total bytes, minimum packet size, and maximum packet size inside a BPF map.
-
-The Python monitor reads the map every second and calculates:
-
-```text
-average packet size = total bytes / total packets
-```
-
-The program returns `XDP_PASS`, so packets are not blocked or changed.
-
-This demonstrates how eBPF/XDP can be used for real-time packet monitoring.
